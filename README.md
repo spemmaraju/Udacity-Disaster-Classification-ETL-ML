@@ -32,8 +32,8 @@ In the middle of a natural disaster, several thousand messages are generated fro
 
 ## Instructions:
 1. Navigate to the folder which has this readme file, start a new terminal and follow the instructions below.
-	a) Run the ETL pipeline by entering - "python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db"
-	b) Run the ML pipeline by entering - "python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl"
+	* Run the ETL pipeline by entering - "python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db"
+	* Run the ML pipeline by entering - "python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl"
 2. Navigate to the "app" folder on the terminal and enter the following command - "python run.py"
 3. Visit the link http://0.0.0.0:3001/ to see the web app. If on Windows on a local machine, try http://localhost:3001/
 
