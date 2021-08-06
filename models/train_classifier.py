@@ -60,7 +60,7 @@ def build_model(Y_train):
         corr_sorted.append(Y_train.columns.get_loc(col))
     pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
                       ('tfidf', TfidfTransformer()),
-                      ('model', ClassifierChain(LogisticRegression(max_iter=200), order=corr_sorted))
+                      ('model', ClassifierChain(LogisticRegression(max_iter=300), order=corr_sorted))
                     ])
     
     parameters = {
@@ -78,8 +78,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
     for i, col in enumerate(category_names):
         print("{}\n{}".format(col, classification_report(Y_test[col], Y_pred[:,i])))
         
-    pr_score = precision_score(y_test, y_pred, average='micro')
-    re_score = recall_score(y_test, y_pred, average='micro')
+    pr_score = precision_score(Y_test, Y_pred, average='micro')
+    re_score = recall_score(Y_test, Y_pred, average='micro')
     print("Overall Precision Score: {}\n Overall Recall Score: {}". format(pr_score, re_score))
 
 def save_model(model, model_filepath):
