@@ -50,7 +50,9 @@ def index():
 
 
     graphs = [
+    # Bar plot of the different genre of messages and how many of the messages are related or not related
     px.bar(data1, x="genre", y=["related", "unrelated"], title = "Genre of messages and whether they are related or not"),
+    # Pie chart of the different categories flagged for related messages
     px.pie(data2, values="Values", names="index", title = "Split of related messages by category")
     ]
 

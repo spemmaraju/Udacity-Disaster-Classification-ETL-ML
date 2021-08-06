@@ -24,16 +24,28 @@ from sklearn.model_selection import GridSearchCV
 import pickle
 
 def load_data(database_filepath):
+    """ Takes in the filename of the SQL database and returns the
+        predictor variables, target variables and target variable names.
+
+        Args:
+            database_filepath - name of the SQL file with all the disaster data stored
+        
+        Returns:
+            X - List of all the messages
+            Y - Dataframe with all the categories
+            category_names - List of all the category names 
+    """     
     db_string = 'sqlite:///{}'.format(database_filepath)
     engine = db.create_engine(db_string)
     connection = engine.connect()
-    metadata = db.MetaData()
-    message_mapping = db.Table('messages_cats', metadata, autoload=True, autoload_with=engine)
-    query = db.select([message_mapping])
-    ResultProxy = connection.execute(query)
-    ResultSet = ResultProxy.fetchall()
-    df = pd.DataFrame(ResultSet)
-    df.columns = ResultSet[0].keys()
+    df=pd.read_sql_table('messages_cats', connection)
+#     metadata = db.MetaData()
+#     message_mapping = db.Table('messages_cats', metadata, autoload=True, autoload_with=engine)
+#     query = db.select([message_mapping])
+#     ResultProxy = connection.execute(query)
+#     ResultSet = ResultProxy.fetchall()
+#     df = pd.DataFrame(ResultSet)
+#     df.columns = ResultSet[0].keys()
 #     df
     X = df['message']
     Y = df.iloc[:, 4:]
@@ -42,6 +54,14 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """ Performs standardization, lemmatization and tokenization of input text.
+
+        Args:
+            text - input text
+        
+        Returns:
+            clean_tokens - returns list of tokens generated from the input text 
+    """        
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -54,6 +74,15 @@ def tokenize(text):
 
 
 def build_model(Y_train):
+    """ Trains a model based on given training data and optimizes hyperparameters for recall
+        using GridSearch and finally returns the Pipeline with Gridsearch.
+
+        Args:
+            Y_train - target variable of the training dataset to get correlation matrix
+        
+        Returns:
+            cv - GridSearch Pipeline            
+    """        
     corr = Y_train.corr()
     corr_sorted = []
     for col in corr.loc['related'].sort_values(ascending=False).index:
@@ -74,6 +103,17 @@ def build_model(Y_train):
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """ Predicts outcomes for test dataset and generates accuracy and recall 
+        scores for each category.
+
+        Args:
+            model - The model to be used for predictions
+            X_test, Y_test - Test dataset with predictors and targets
+            category_names - Names of the target variables
+        
+        Returns:
+            None
+    """       
     Y_pred = model.predict(X_test)
     for i, col in enumerate(category_names):
         print("{}\n{}".format(col, classification_report(Y_test[col], Y_pred[:,i])))
@@ -83,6 +123,15 @@ def evaluate_model(model, X_test, Y_test, category_names):
     print("Overall Precision Score: {}\n Overall Recall Score: {}". format(pr_score, re_score))
 
 def save_model(model, model_filepath):
+    """ Saves the model as a "pickle" file.
+
+        Args:
+            model - The model used for predictions
+            model_filepath - location and filename to save the model in
+        
+        Returns:
+            None 
+    """       
     filename = model_filepath
     pickle.dump(model, open(filename, 'wb'))
 

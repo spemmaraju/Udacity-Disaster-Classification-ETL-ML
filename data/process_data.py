@@ -4,6 +4,16 @@ import numpy as np
 import sqlalchemy
 
 def load_data(messages_filepath, categories_filepath):
+    """ Takes in two CSV files as inputs and returns a concatenated dataframe 
+        with appropriate columns and data values.
+
+        Args:
+            messages_filepath - location of the CSV file with messages
+            categories_filepath - location of the CSV file with category flagging of each message
+        
+        Returns:
+            df (DataFrame) - Dataframe with all the messages and relevant categories
+    """    
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     # load categories dataset
@@ -35,6 +45,18 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """ Takes in a dataframe and cleans up the data by performing the following tasks-
+        1. Deleting duplicate rows based on all the columns as well as the message column alone
+        2. Deleting irrelevant rows that do not add any value to the model
+        3. Deleting irrelevant columns that do not add any value to the model
+        4. Deleting rows with meaningless messages that do not add any value to the model.
+
+        Args:
+            df (DataFrame) - Dataframe with all the messages and relevant categories
+        
+        Returns:
+            df (DataFrame) - Dataframe after performing all the cleaning steps
+    """     
     # drop duplicates across all rows
     df.drop_duplicates(inplace=True)
     # drop all rows with field "related" = 2 because they do not have any of the other columns populated and are 
@@ -57,6 +79,15 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    """ Takes in the final dataframe and name of a SQL database and stores the data in a SQL table.
+
+        Args:
+            df (DataFrame) - Dataframe with all the messages and relevant categories
+            database_filename - Name of the SQL database where the dataframe will be stored
+        
+        Returns:
+            None
+    """    
     # Enter the name of the database
     db_string = 'sqlite:///{}'.format(database_filename)
     engine = sqlalchemy.create_engine(db_string)
