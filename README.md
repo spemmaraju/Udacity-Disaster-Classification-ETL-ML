@@ -39,8 +39,11 @@ In the middle of a natural disaster, several thousand messages are generated fro
 
 ## Screenshots of the Web App:
 ![ScreenShot1](Capture1.PNG)
+
 ![ScreenShot2](Capture2.png)
+
 ![ScreenShot3](Capture3.png)
+
 ![ScreenShot4](Capture4.png)
 
 ## Key Observations on the model development process:
