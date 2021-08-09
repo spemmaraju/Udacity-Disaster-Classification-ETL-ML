@@ -40,11 +40,11 @@ In the middle of a natural disaster, several thousand messages are generated fro
 ## Screenshots of the Web App:
 ![ScreenShot1](Capture1.PNG)
 
-![ScreenShot2](Capture2.png)
+![ScreenShot1](Capture2.png)
 
-![ScreenShot3](Capture3.png)
+![ScreenShot1](Capture3.png)
 
-![ScreenShot4](Capture4.png)
+![ScreenShot1](Capture4.png)
 
 ## Key Observations on the model development process:
 1. The dataset is imbalanced with some of the categories like aid_centers and fire having very few positives. Therefore, in the model development process, parameter tuning was performed by emphasizing on recall instead of precision. This may result in more false positives, but given the context, it is better to flag more categories for a disaster related message than to miss any important category due to poor recall. 
